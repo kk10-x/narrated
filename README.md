@@ -2,6 +2,8 @@
 
 Turns any article URL into a short, two-host podcast-style audio clip — not flat text-to-speech, but a generated dialogue between two AI voices discussing the piece.
 
+![Narrated screenshot](docs/screenshot-main.png)
+
 ## Tech Stack
 - **Backend:** FastAPI (Python)
 - **Article extraction:** `trafilatura`
@@ -15,6 +17,30 @@ Turns any article URL into a short, two-host podcast-style audio clip — not fl
 - Two distinct AI voices (Alex and Sam) hold a short conversational discussion of the article instead of reading it verbatim
 - Article text extraction handles arbitrary web pages, not just a fixed set of sites
 - Clean error handling for unfetchable pages, short/invalid articles, and upstream API failures
+
+## How It Works
+
+```mermaid
+flowchart LR
+    A[Article URL] --> B["Scrape article\n(trafilatura)"]
+    B --> C["Generate 2-host dialogue\n(Claude API)"]
+    C --> D["Synthesize each line\n(ElevenLabs TTS)"]
+    D --> E["Stitch clips together\n(pydub)"]
+    E --> F["Return audio\n(FastAPI response)"]
+    F --> G[Play in browser]
+```
+
+1. You paste an article URL into the frontend.
+2. The backend fetches and extracts the readable article text.
+3. Claude condenses that text into a short two-host dialogue (JSON: speaker + line).
+4. Each line is sent to ElevenLabs with a distinct voice per host.
+5. The resulting clips are stitched into a single MP3 and streamed back to the browser.
+
+## Screenshots
+
+| Default state | Filled in |
+|---|---|
+| ![Default state](docs/screenshot-main.png) | ![Filled in state](docs/screenshot-filled.png) |
 
 ## Setup
 
