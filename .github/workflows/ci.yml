@@ -14,7 +14,7 @@ jobs:
           python-version: "3.11"
       - run: pip install -r requirements.txt
       - run: ruff check . || true
-      - run: pytest
+      - run: python -m pytest
 
   frontend:
     runs-on: ubuntu-latest
