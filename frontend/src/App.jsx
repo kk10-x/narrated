@@ -36,32 +36,51 @@ export default function App() {
   }
 
   return (
-    <div style={{ maxWidth: 560, margin: "4rem auto", fontFamily: "sans-serif" }}>
-      <h1>Narrated</h1>
-      <p>Paste an article URL, get back a two-host podcast-style narration.</p>
+    <div className="page">
+      <div className="brand">
+        <div className="brand-mark">🎙️</div>
+        <h1>Narrated</h1>
+      </div>
+      <p className="subtitle">
+        Paste an article URL and get back a short, two-host podcast-style discussion of it —
+        not flat text-to-speech.
+      </p>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="url"
-          required
-          placeholder="https://example.com/some-article"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          style={{ width: "100%", padding: "0.5rem", fontSize: "1rem" }}
-        />
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          style={{ marginTop: "0.75rem", padding: "0.5rem 1rem" }}
-        >
-          {status === "loading" ? "Narrating..." : "Narrate"}
-        </button>
-      </form>
+      <div className="card">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="url"
+            required
+            placeholder="https://example.com/some-article"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+          <button type="submit" disabled={status === "loading"}>
+            {status === "loading" ? (
+              <>
+                <span className="spinner" />
+                Narrating
+              </>
+            ) : (
+              "Narrate"
+            )}
+          </button>
+        </form>
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
-      {audioUrl && (
-        <audio controls src={audioUrl} style={{ marginTop: "1.5rem", width: "100%" }} />
-      )}
+        {error && <div className="error-box">{error}</div>}
+
+        {audioUrl && (
+          <div className="result">
+            <div className="result-label">Your narration</div>
+            <audio controls src={audioUrl} />
+          </div>
+        )}
+      </div>
+
+      <p className="how-it-works">
+        <strong>How it works:</strong> the article is scraped and condensed into a two-host
+        dialogue by Claude, then rendered as audio with two distinct ElevenLabs voices.
+      </p>
     </div>
   );
 }
