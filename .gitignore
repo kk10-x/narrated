@@ -17,3 +17,6 @@ build/
 
 # OS
 .DS_Store
+
+# Local tools (not part of the repo, downloaded per-machine)
+backend/tools/

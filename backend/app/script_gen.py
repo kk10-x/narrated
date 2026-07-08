@@ -22,7 +22,7 @@ def generate_dialogue(article_text: str) -> list[dict]:
         messages=[{"role": "user", "content": article_text[:8000]}],
     )
 
-    raw = response.content[0].text.strip()
+    raw = next(block.text for block in response.content if block.type == "text").strip()
     if raw.startswith("```"):
         raw = raw.strip("`")
         raw = raw.split("\n", 1)[1] if "\n" in raw else raw
